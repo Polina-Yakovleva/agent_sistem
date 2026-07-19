@@ -104,6 +104,25 @@ pytest --cov=app --cov-report=term-missing
 На каждый push/PR в `main` GitHub Actions (`.github/workflows/ci.yml`) прогоняет
 линтер (`ruff`) и тесты (`pytest`).
 
+## PoC: happy path + рискованный путь с эскалацией на человека
+
+`examples/poc_hitl.py` демонстрирует два режима работы на реальном коде инструментов:
+
+1. **Happy path** — безопасная read-only операция (поиск рейсов, `get_flights`)
+   выполняется агентом автономно, без участия человека.
+2. **Рискованный путь** — необратимая операция (отмена брони, `cancel_reservation`)
+   эскалируется на человека через Human-in-the-loop: инструмент вызывает
+   `interrupt()`, LangGraph приостанавливает граф и ждёт явного «да/нет».
+   Запись в БД происходит только после подтверждения; при «нет» операция отменяется.
+
+Запуск без внешней инфраструктуры (БД мокается in-memory):
+
+```bash
+python -m examples.poc_hitl
+```
+
+Те же сценарии проверяются в CI: `tests/test_poc_hitl.py` (LLM/Postgres мокаются).
+
 ## Готовность к API/Docker
 
 - Точка входа API: `uvicorn app.api:app`.
