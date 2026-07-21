@@ -79,6 +79,10 @@ flowchart TB
 ## Состав
 
 - `app/` — runtime-код агента (оркестратор, граф, инструменты, память, observability, API).
+- `QUALITY.md` — карточка качества агента и RAG (метрики последнего прогона).
+- `eval_reports/` — снимок отчёта валидации (`full_dataset_report.*`).
+- `scripts/eval/` — харнесс бенчмарков 
+- `datasets/` — золотой датасет для eval.
 - `requirements.txt` — runtime-зависимости.
 - `checkenv.py` — дефолты параметров и валидация окружения.
 - `.env` — реальные значения (секреты), не хранится в git.
@@ -162,12 +166,27 @@ docker compose run --rm api python -m app.main "привет"
 
 Схема БД и коллекция Qdrant в compose не создаются автоматически — их нужно подготовить заранее.
 
+## Качество 
+
+| Контур | Метрика | Значение |
+|--------|---------|----------|
+| Agent e2e | pass-rate (n=27) | 100% |
+| Tools / planning | pass-rate | 100% |
+| vs baseline | Δ pass-rate | +80 п.п. |
+| RAG | recall@5 / MRR | 0.975 / 0.917 |
+| Memory | multiturn | 75% |
+
+KPI для RAG — **recall@k и MRR**.
+Подробности и зоны риска: [QUALITY.md](QUALITY.md). Снимок отчёта: [`eval_reports/`](eval_reports/).
+
 ## Тесты / CI
 
-Unit-тесты (`tests/`) покрывают чистую логику агентов, инструментов и конфига —
-LLM, Postgres и Qdrant в них мокаются (`monkeypatch`), реальные сервисы не нужны.
+Два трека:
 
-Установить dev-зависимости и запустить тесты локально:
+| Трек | Что проверяет | Когда |
+|------|---------------|--------|
+| Unit (`tests/`, без `tests/eval`) | чистая логика агентов/инструментов/конфига; LLM/БД/Qdrant мокаются | каждый PR (`ci.yml`) |
+| Eval | бенчмарки агента и RAG | offline на PR; online вручную (`eval.yml`) |
 
 ```bash
 pip install -r requirements-dev.txt
@@ -175,8 +194,12 @@ ruff check .
 pytest --cov=app --cov-report=term-missing
 ```
 
-На каждый push/PR в `main` GitHub Actions (`.github/workflows/ci.yml`) прогоняет
-линтер (`ruff`) и тесты (`pytest`).
+Eval-харнесс (`scripts/eval/`, золотой `datasets/`) — см. `scripts/eval/README.md`:
+
+```bash
+pip install -r requirements-eval.txt -r requirements-dev.txt
+python -m scripts.eval.run_all --offline
+```
 
 ## Готовность к API/Docker
 
