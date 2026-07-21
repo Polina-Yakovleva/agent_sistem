@@ -2,6 +2,80 @@
 
 Минимальная production-oriented упаковка агента для последующей контейнеризации и API-слоя.
 
+## Архитектура
+
+Мультиагентный runtime на LangGraph: память → планировщик → параллельные субагенты → агрегатор → критик.
+Необратимые операции (бронь / отмена) останавливают граф через Human-in-the-loop (`interrupt` → `/v1/chat/resume`).
+
+```mermaid
+flowchart TB
+  subgraph Entry["Вход"]
+    API["HTTP API<br/>/v1/chat · /v1/chat/resume"]
+    CLI["CLI · app.main"]
+  end
+
+  SVC["AgentService"]
+  API --> SVC
+  CLI --> SVC
+
+  subgraph Graph["LangGraph"]
+    direction TB
+    MR["memory_read"] --> SUM["summarize_session"]
+    SUM --> PL["planner"]
+
+    PL -->|dispatch| F["flight"]
+    PL -->|dispatch| B["booking"]
+    PL -->|dispatch| C["compliance"]
+    PL -->|dispatch| E["external"]
+    PL -->|пустой план| AGG
+
+    F --> AGG["aggregator"]
+    B --> AGG
+    C --> AGG
+    E --> AGG
+
+    AGG --> CR["critic"]
+    CR -->|ok| FIN["finalize"]
+    CR -->|замечания| REV["revise"]
+    REV --> PL
+    FIN --> MW["memory_write"]
+  end
+
+  SVC --> MR
+  MW --> OUT["Ответ пользователю"]
+
+  subgraph HITL["Human-in-the-loop"]
+    INT["interrupt<br/>reserve / cancel"]
+    HUM["Подтверждение человека<br/>да / нет"]
+    INT --> HUM
+  end
+
+  B -.->|необратимая операция| INT
+  HUM -.->|Command resume| B
+
+  subgraph Ext["Инфраструктура"]
+    PG[(Postgres<br/>рейсы · билеты · checkpoint)]
+    QD[(Qdrant<br/>RAG)]
+    LLM["LLM<br/>OpenAI-compatible"]
+  end
+
+  F --> PG
+  B --> PG
+  C --> QD
+  Graph --> LLM
+  MR --> PG
+  MW --> PG
+```
+
+| Слой | Роль |
+|------|------|
+| `app/agents` | оркестратор, субагенты, critic, guardrails |
+| `app/tools` | flight / booking (HITL) / compliance / external |
+| `app/memory` | STM (checkpoint) + LTM (эпизоды, профиль) |
+| `app/rag` | retrieval в Qdrant для compliance |
+| `app/observability` | логи, метрики, Langfuse |
+| `app/api` · `app/service` | HTTP и общий диалоговый слой |
+
 ## Состав
 
 - `app/` — runtime-код агента (оркестратор, граф, инструменты, память, observability, API).
