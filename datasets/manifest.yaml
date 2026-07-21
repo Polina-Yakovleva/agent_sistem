@@ -1,0 +1,19 @@
+version: 1
+description: Золотой датасет мультиагентного авиационного ассистента
+splits:
+  e2e:
+    file: e2e_cases.yaml
+    target_count: 45
+  rag:
+    file: rag_retrieval_cases.yaml
+    target_count: 40
+  booking:
+    file: booking_cases.yaml
+    target_count: 12
+  multiturn:
+    file: multiturn_cases.yaml
+    target_count: 8
+  out_of_scope:
+    file: out_of_scope_cases.yaml
+    target_count: 8
+regenerate: python -m scripts.eval.generate_datasets

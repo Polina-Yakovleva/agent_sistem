@@ -1,0 +1,191 @@
+version: 1
+suite: multiturn
+description: Golden dataset — multiturn
+count: 8
+cases:
+- id: mt_visa_followup_001
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  - compliance
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: Найди рейсы Москва Стамбул
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - рейс
+      - Стамбул
+      - не найден
+    - user_query: для граждан россии нужна виза в турцию
+      success_criteria:
+      - visa_stated_correctly
+      - context_retention_turn2
+      reference_facts:
+        visa_required: false
+      must_contain_any:
+      - виз
+      - Турц
+- id: mt_flight_then_book_001
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  - flight
+  - booking
+  difficulty: hard
+  multiturn:
+    turns:
+    - user_query: покажи рейсы москва стамбул
+      success_criteria:
+      - has_final_answer
+    - user_query: забронируй первый из списка для Петрова Петра паспорт 4510987654
+      success_criteria:
+      - has_final_answer
+  human_review_recommended: true
+- id: mt_cn_visa
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: рейсы москва китай
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - рейс
+      - Кита
+      - не найден
+    - user_query: а виза в китай для россиян нужна
+      success_criteria:
+      - has_final_answer
+      - context_retention_turn2
+      reference_facts:
+        citizenship: RU
+        destination_country: Китай
+      must_contain_any:
+      - виз
+      - Кита
+- id: mt_weather_ist
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: рейсы в стамбул
+      success_criteria:
+      - has_final_answer
+    - user_query: погода в стамбуле завтра
+      success_criteria:
+      - has_final_answer
+      - context_retention_turn2
+      must_contain_any:
+      - погод
+      - температур
+      - Стамбул
+- id: mt_carrier_follow
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: виза турция россия
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - виз
+      - Турц
+    - user_query: нормы багажа аэрофлот
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - багаж
+      - клад
+      - Аэрофлот
+- id: mt_spb_msk
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: рейсы спб москва
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - рейс
+      - не найден
+    - user_query: самый ранний рейс
+      success_criteria:
+      - has_final_answer
+      - context_retention_turn2
+      must_contain_any:
+      - рейс
+      - вылет
+      - '0'
+- id: mt_uae_trip
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: москва дубай рейсы
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - рейс
+      - Дуба
+      - не найден
+    - user_query: виза оаэ для россиян
+      success_criteria:
+      - has_final_answer
+      - context_retention_turn2
+      reference_facts:
+        citizenship: RU
+        destination_country: ОАЭ
+      must_contain_any:
+      - виз
+      - ОАЭ
+- id: mt_egypt
+  suite: multiturn
+  user_query: placeholder
+  tags:
+  - multiturn
+  difficulty: medium
+  multiturn:
+    same_session: true
+    turns:
+    - user_query: рейсы москва египет
+      success_criteria:
+      - has_final_answer
+      must_contain_any:
+      - рейс
+      - Егип
+      - не найден
+    - user_query: виза египет
+      success_criteria:
+      - has_final_answer
+      - context_retention_turn2
+      reference_facts:
+        citizenship: RU
+        destination_country: Египет
+      must_contain_any:
+      - виз
+      - Егип

@@ -1,0 +1,85 @@
+version: 1
+suite: out_of_scope
+description: Запросы вне домена/«мусорные» — ожидается отказ или уточнение
+count: 8
+cases:
+- id: oos_scope_001
+  suite: out_of_scope
+  user_query: какой сегодня курс доллара к рублю
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_002
+  suite: out_of_scope
+  user_query: расскажи анекдот про программистов
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_003
+  suite: out_of_scope
+  user_query: как приготовить борщ
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_004
+  suite: out_of_scope
+  user_query: реши уравнение 2x + 3 = 7
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_005
+  suite: out_of_scope
+  user_query: переведи слово hello на французский
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_006
+  suite: out_of_scope
+  user_query: asdf qwerty 12345 zxcv
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_007
+  suite: out_of_scope
+  user_query: напиши короткое стихотворение про осень
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
+- id: oos_scope_008
+  suite: out_of_scope
+  user_query: кто выиграл последний чемпионат мира по футболу
+  tags:
+  - out_of_scope
+  - boundary
+  difficulty: medium
+  expect_refusal: true
+  success_criteria:
+  - has_final_answer
