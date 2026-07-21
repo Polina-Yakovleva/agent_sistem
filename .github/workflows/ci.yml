@@ -26,5 +26,6 @@ jobs:
       - name: Format check (ruff)
         run: ruff format --check .
 
-      - name: Tests (pytest)
-        run: python -m pytest --cov=app --cov-report=term-missing
+      - name: Tests (pytest, unit)
+        # Eval-харнесс гоняется в eval.yml (tests/eval + offline report).
+        run: python -m pytest --ignore=tests/eval --cov=app --cov-report=term-missing
