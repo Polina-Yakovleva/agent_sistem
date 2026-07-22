@@ -110,9 +110,7 @@ def evaluate_cases(
     return result
 
 
-def per_tool_quality(
-    cases: list[Case], results_by_id: dict[str, Optional[bool]]
-) -> dict:
+def per_tool_quality(cases: list[Case], results_by_id: dict[str, Optional[bool]]) -> dict:
     """Pass-rate кейсов, сгруппированных по expected-инструменту."""
     buckets: dict[str, list[bool]] = {}
     for case in cases:

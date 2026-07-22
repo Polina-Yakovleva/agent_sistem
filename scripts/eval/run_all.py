@@ -59,9 +59,7 @@ def _resolve(
             print(f"Раздел [{key}] из чекпоинта ({cached.light.value})")
             return cached
     if not want:
-        return SectionResult(
-            name=key, light=Light.NA, comment=skipped_comment
-        )
+        return SectionResult(name=key, light=Light.NA, comment=skipped_comment)
     section = compute()
     if stem:
         ckpt.save_section(stem, key, section)
@@ -84,7 +82,12 @@ def _e2e_from_checkpoint(
         graded_cases.append(case)
     passed = sum(1 for v in e2e_by_id.values() if v is True)
     total = sum(1 for v in e2e_by_id.values() if v is not None)
-    return graded_cases, e2e_by_id, PassStat(passed=passed, total=total), f"из чекпоинта {path.name}; n={total}"
+    return (
+        graded_cases,
+        e2e_by_id,
+        PassStat(passed=passed, total=total),
+        f"из чекпоинта {path.name}; n={total}",
+    )
 
 
 def _build_e2e_bundle(
@@ -174,7 +177,15 @@ def _build_e2e_bundle(
 
     if not want_e2e:
         na = SectionResult(name="Качество прогноза end-to-end", light=Light.NA, comment="пропущено")
-        return all_e2e, {}, [na, _na("Инструменты", RuntimeError("e2e skipped")), _na("Планирование", RuntimeError("e2e skipped"))]
+        return (
+            all_e2e,
+            {},
+            [
+                na,
+                _na("Инструменты", RuntimeError("e2e skipped")),
+                _na("Планирование", RuntimeError("e2e skipped")),
+            ],
+        )
 
     if e2e_start > 0 and stem:
         path = ckpt.checkpoint_path("e2e", stem)
@@ -216,7 +227,15 @@ def _build_e2e_bundle(
         return e2e_cases, e2e_by_id, [s_e2e, s_tools, s_plan]
     except Exception as exc:  # noqa: BLE001
         traceback.print_exc()
-        return e2e_cases, {}, [_na("Качество прогноза end-to-end", exc), _na("Инструменты", exc), _na("Планирование", exc)]
+        return (
+            e2e_cases,
+            {},
+            [
+                _na("Качество прогноза end-to-end", exc),
+                _na("Инструменты", exc),
+                _na("Планирование", exc),
+            ],
+        )
 
 
 def _run_memory(dataset: Dataset, ctx: ValidationContext, limit: int) -> SectionResult:
@@ -224,9 +243,7 @@ def _run_memory(dataset: Dataset, ctx: ValidationContext, limit: int) -> Section
     from scripts.eval.rag_eval import evaluate_rag
     from scripts.eval.runner import AgentRunner
 
-    mt_cases = _limit(
-        dataset.suite("multiturn").cases if dataset.suite("multiturn") else [], limit
-    )
+    mt_cases = _limit(dataset.suite("multiturn").cases if dataset.suite("multiturn") else [], limit)
     with AgentRunner() as runner:
         mt = evaluate_multiturn(runner, mt_cases)
     graded = [m for m in mt if m.passed is not None]
@@ -293,9 +310,7 @@ def _run_baseline(dataset: Dataset, ctx: ValidationContext, limit: int) -> Secti
     from scripts.eval.runner import AgentRunner
     from scripts.eval.suite_eval import evaluate_cases
 
-    cases = _limit(
-        dataset.suite("e2e").cases if dataset.suite("e2e") else [], min(limit or 15, 15)
-    )
+    cases = _limit(dataset.suite("e2e").cases if dataset.suite("e2e") else [], min(limit or 15, 15))
     with AgentRunner() as runner:
         agent_run = evaluate_cases(runner, cases, suite="e2e")
     agent_rate = agent_run.stat.rate
@@ -534,9 +549,7 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    use_ckpt = bool(
-        args.checkpoint or args.e2e_start or args.from_section or args.only_section
-    )
+    use_ckpt = bool(args.checkpoint or args.e2e_start or args.from_section or args.only_section)
     report = run(
         significance=args.significance,
         validation_type=args.validation_type,

@@ -1,6 +1,5 @@
 """Тесты аугментаций стабильности и рендеринга отчёта (offline)."""
 
-from scripts.eval.robustness import AUGMENTERS, typo_augment
 from scripts.eval.metrics import PassStat, SectionResult
 from scripts.eval.report import (
     Block,
@@ -8,6 +7,7 @@ from scripts.eval.report import (
     render_markdown,
     section_from_pass_stat,
 )
+from scripts.eval.robustness import AUGMENTERS, typo_augment
 from scripts.eval.thresholds import Light, ValidationContext
 
 
