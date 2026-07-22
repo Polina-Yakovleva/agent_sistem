@@ -2,13 +2,36 @@
 
 Минимальная production-oriented упаковка агента для последующей контейнеризации и API-слоя.
 
-## Состав
+## Структура проекта
 
-- `app/` — runtime-код агента (оркестратор, граф, инструменты, память, observability, API).
-- `requirements.txt` — runtime-зависимости.
-- `checkenv.py` — дефолты параметров и валидация окружения.
-- `.env` — реальные значения (секреты), не хранится в git.
-- `Dockerfile` / `docker-compose.yml` — образ API и связка с Postgres/Qdrant.
+```text
+agent_runtime/
+├── app/                      # runtime агента
+│   ├── agents/               # оркестратор, субагенты, critic, guardrails
+│   ├── tools/                # flight / booking (HITL) / compliance / external
+│   ├── memory/               # STM (checkpoint) + LTM (эпизоды, профиль)
+│   ├── observability/        # логи, метрики, Langfuse
+│   ├── api.py                # FastAPI: /v1/chat, /v1/chat/resume, health
+│   ├── service.py            # общий диалоговый слой (CLI и API)
+│   ├── main.py               # CLI-вход
+│   ├── rag.py                # retrieval в Qdrant (compliance)
+│   ├── runtime.py            # сборка графа / сессии
+│   ├── llm.py                # OpenAI-compatible LLM
+│   ├── db.py                 # Postgres
+│   ├── config.py             # настройки из окружения
+│   └── external_api.py       # погода / отели и др. внешние API
+├── examples/
+│   └── poc_hitl.py           # PoC: happy path + эскалация HITL
+├── tests/                    # unit-тесты + test_poc_hitl
+├── .github/workflows/        # ci.yml (ruff + pytest)
+├── checkenv.py               # дефолты и проверка .env
+├── Dockerfile
+├── docker-compose.yml        # api + Postgres + Qdrant
+├── requirements.txt
+└── requirements-dev.txt
+```
+
+`.env` с секретами в git не хранится.
 
 ## Быстрый запуск (локально)
 
