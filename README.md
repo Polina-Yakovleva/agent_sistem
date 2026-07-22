@@ -76,17 +76,40 @@ flowchart TB
 | `app/observability` | логи, метрики, Langfuse |
 | `app/api` · `app/service` | HTTP и общий диалоговый слой |
 
-## Состав
+## Структура проекта
 
-- `app/` — runtime-код агента (оркестратор, граф, инструменты, память, observability, API).
-- `QUALITY.md` — карточка качества агента и RAG (метрики последнего прогона).
-- `eval_reports/` — снимок отчёта валидации (`full_dataset_report.*`).
-- `scripts/eval/` — харнесс бенчмарков 
-- `datasets/` — золотой датасет для eval.
-- `requirements.txt` — runtime-зависимости.
-- `checkenv.py` — дефолты параметров и валидация окружения.
-- `.env` — реальные значения (секреты), не хранится в git.
-- `Dockerfile` / `docker-compose.yml` — образ API и связка с Postgres/Qdrant.
+```text
+agent_runtime/
+├── app/                      # runtime агента
+│   ├── agents/               # оркестратор, субагенты, critic, guardrails
+│   ├── tools/                # flight / booking (HITL) / compliance / external
+│   ├── memory/               # STM (checkpoint) + LTM (эпизоды, профиль)
+│   ├── observability/        # логи, метрики, Langfuse
+│   ├── api.py                # FastAPI: /v1/chat, /v1/chat/resume, health
+│   ├── service.py            # общий диалоговый слой (CLI и API)
+│   ├── main.py               # CLI-вход
+│   ├── rag.py                # retrieval в Qdrant (compliance)
+│   ├── runtime.py            # сборка графа / сессии
+│   ├── llm.py                # OpenAI-compatible LLM
+│   ├── db.py                 # Postgres
+│   ├── config.py             # настройки из окружения
+│   └── external_api.py       # погода / отели и др. внешние API
+├── tests/                    # unit-тесты (agents, tools, memory, config)
+│   └── eval/                 # offline-тесты харнесса
+├── scripts/eval/             # бенчмарки агента и RAG
+├── datasets/                 # золотой датасет для eval
+├── eval_reports/             # снимок full_dataset_report.*
+├── .github/workflows/        # ci.yml (unit) · eval.yml (offline eval)
+├── QUALITY.md                # карточка качества (метрики прогона)
+├── checkenv.py               # дефолты и проверка .env
+├── Dockerfile
+├── docker-compose.yml        # api + Postgres + Qdrant
+├── requirements.txt
+├── requirements-dev.txt
+└── requirements-eval.txt
+```
+
+`.env` с секретами в git не хранится.
 
 ## Быстрый запуск (локально)
 
