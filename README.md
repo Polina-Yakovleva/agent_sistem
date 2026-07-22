@@ -198,7 +198,7 @@ docker compose run --rm api python -m app.main "привет"
 
 | Контур | Метрика | Значение |
 |--------|---------|----------|
-| Agent e2e | pass-rate (n=27) | 100% |
+| Agent e2e | pass-rate | 100% |
 | Tools / planning | pass-rate | 100% |
 | vs baseline | Δ pass-rate | +80 п.п. |
 | RAG | recall@5 / MRR | 0.975 / 0.917 |
