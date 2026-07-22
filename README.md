@@ -1,6 +1,7 @@
-# Agent Runtime Package
+# Agent Runtime
 
-Минимальная production-oriented упаковка агента для последующей контейнеризации и API-слоя.
+Мультиагентный авиационный ассистент на LangGraph: HTTP API, CLI, Docker Compose
+(Postgres + Qdrant), RAG и Human-in-the-loop. Ветка PoC HITL.
 
 ## Структура проекта
 
