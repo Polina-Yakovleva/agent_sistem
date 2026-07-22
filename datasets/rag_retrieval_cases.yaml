@@ -1,0 +1,770 @@
+version: 1
+suite: rag
+description: Golden dataset — rag
+count: 40
+cases:
+- id: rag_visa_tr_001
+  suite: rag
+  user_query: виза турция граждане россии
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Турция граждане России безвиз
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Турц
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_cn_001
+  suite: rag
+  user_query: виза китай россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Китай граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Кита
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_000
+  suite: rag
+  user_query: виза абхазия россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Абхазия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Абха
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_001
+  suite: rag
+  user_query: виза беларусь россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Беларусь граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Бела
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_002
+  suite: rag
+  user_query: виза казахстан россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Казахстан граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Каза
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_003
+  suite: rag
+  user_query: виза армения россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Армения граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Арме
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_004
+  suite: rag
+  user_query: виза сербия россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Сербия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Серб
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_005
+  suite: rag
+  user_query: виза оаэ россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза ОАЭ граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - ОАЭ
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_006
+  suite: rag
+  user_query: виза таиланд россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Таиланд граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Таил
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_007
+  suite: rag
+  user_query: виза индия россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Индия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Инди
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_008
+  suite: rag
+  user_query: виза египет россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Египет граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Егип
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_009
+  suite: rag
+  user_query: виза грузия россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Грузия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Груз
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_010
+  suite: rag
+  user_query: виза узбекистан россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Узбекистан граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Узбе
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_011
+  suite: rag
+  user_query: виза вьетнам россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Вьетнам граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Вьет
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_012
+  suite: rag
+  user_query: виза индонезия россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Индонезия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Индо
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_013
+  suite: rag
+  user_query: виза мальдивы россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Мальдивы граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Маль
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_014
+  suite: rag
+  user_query: виза шри-ланка россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Шри-Ланка граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Шри-
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_015
+  suite: rag
+  user_query: виза куба россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Куба граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Куба
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_016
+  suite: rag
+  user_query: виза мексика россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Мексика граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Мекс
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_017
+  suite: rag
+  user_query: виза аргентина россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Аргентина граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Арге
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_018
+  suite: rag
+  user_query: виза бразилия россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза Бразилия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Браз
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_019
+  suite: rag
+  user_query: виза юар россия
+  tags:
+  - rag
+  - visa
+  difficulty: easy
+  rag_eval:
+    query: виза ЮАР граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - ЮАР
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_020
+  suite: rag
+  user_query: виза израиль россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Израиль граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Изра
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_021
+  suite: rag
+  user_query: виза иордания россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Иордания граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Иорд
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_022
+  suite: rag
+  user_query: виза марокко россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Марокко граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Маро
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_023
+  suite: rag
+  user_query: виза тунис россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Тунис граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Туни
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_024
+  suite: rag
+  user_query: виза албания россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Албания граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Алба
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_025
+  suite: rag
+  user_query: виза черногория россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Черногория граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Черн
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_026
+  suite: rag
+  user_query: виза босния россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Босния граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Босн
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_027
+  suite: rag
+  user_query: виза катар россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Катар граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Ката
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_028
+  suite: rag
+  user_query: виза бахрейн россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Бахрейн граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Бахр
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_029
+  suite: rag
+  user_query: виза оман россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Оман граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Оман
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_030
+  suite: rag
+  user_query: виза малайзия россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Малайзия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Мала
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_031
+  suite: rag
+  user_query: виза филиппины россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Филиппины граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Фили
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_032
+  suite: rag
+  user_query: виза непал россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Непал граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Непа
+    expect_retrieval: true
+    top_k: 5
+- id: rag_visa_033
+  suite: rag
+  user_query: виза монголия россия
+  tags:
+  - rag
+  - visa
+  difficulty: medium
+  rag_eval:
+    query: виза Монголия граждане России
+    doc_types:
+    - visa
+    entity: КД МИД
+    relevant_match:
+      doc_type: visa
+      entity: КД МИД
+      text_contains:
+      - Монг
+    expect_retrieval: true
+    top_k: 5
+- id: rag_carrier_aeroflot
+  suite: rag
+  user_query: аэрофлот ручная кладь
+  tags:
+  - rag
+  - carrier
+  difficulty: medium
+  rag_eval:
+    query: аэрофлот ручная кладь
+    doc_types:
+    - baggage
+    - animals
+    entity: Aeroflot
+    relevant_match:
+      doc_type: baggage
+      entity: Aeroflot
+      text_contains:
+      - клад
+      - багаж
+    expect_retrieval: true
+    top_k: 5
+- id: rag_carrier_pobeda
+  suite: rag
+  user_query: победа багаж нормы
+  tags:
+  - rag
+  - carrier
+  difficulty: medium
+  rag_eval:
+    query: победа багаж нормы
+    doc_types:
+    - baggage
+    - animals
+    entity: Pobeda
+    relevant_match:
+      doc_type: baggage
+      entity: Pobeda
+      text_contains:
+      - багаж
+    expect_retrieval: true
+    top_k: 5
+- id: rag_carrier_s7
+  suite: rag
+  user_query: s7 перевозка животных
+  tags:
+  - rag
+  - carrier
+  difficulty: medium
+  rag_eval:
+    query: s7 перевозка животных
+    doc_types:
+    - baggage
+    - animals
+    entity: S7
+    relevant_match:
+      doc_type: baggage
+      entity: S7
+      text_contains:
+      - животн
+    expect_retrieval: true
+    top_k: 5
+- id: rag_carrier_uralairlines
+  suite: rag
+  user_query: уральские авиалинии багаж
+  tags:
+  - rag
+  - carrier
+  difficulty: medium
+  rag_eval:
+    query: уральские авиалинии багаж
+    doc_types:
+    - baggage
+    - animals
+    entity: Uralairlines
+    relevant_match:
+      doc_type: baggage
+      entity: Uralairlines
+      text_contains:
+      - багаж
+    expect_retrieval: true
+    top_k: 5

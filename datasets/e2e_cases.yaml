@@ -1,0 +1,848 @@
+version: 1
+suite: e2e
+description: Golden dataset — e2e
+count: 45
+cases:
+- id: e2e_compound_tr_001
+  suite: e2e
+  user_query: Найди ближайшие рейсы из Москвы в Стамбул и нужна ли виза в Турцию для
+    граждан России
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    visa_required: false
+    citizenship: RU
+    destination_country: Турция
+    origin: Москва
+    flights_expected: true
+  must_contain_any:
+  - виз
+  - Турц
+  success_criteria:
+  - has_final_answer
+  - expected_agents_subset
+  - expected_tools_any_hit
+  - parallel_domains
+  - visa_stated_correctly
+  - flights_listed_or_empty_ok
+  - both_subtasks_addressed
+  - plan_agents_ok
+  - plan_task_params_ok
+  human_review_recommended: true
+- id: e2e_compound_cn_001
+  suite: e2e
+  user_query: найди ближайший рейс из москвы в китай и узнай, нужна ли виза в китай
+    для граждан россии
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    citizenship: RU
+    destination_country: Китай
+    origin: Москва
+  must_contain_any:
+  - виз
+  - Кита
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+  - both_subtasks_addressed
+  - expected_agents_subset
+  - plan_agents_ok
+  - plan_task_params_ok
+- id: e2e_visa_tr_only
+  suite: e2e
+  user_query: для граждан россии нужна виза в турцию
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    visa_required: false
+    citizenship: RU
+    destination_country: Турция
+  must_contain_any:
+  - не треб
+  - безвиз
+  - не нужн
+  success_criteria:
+  - has_final_answer
+  - visa_stated_correctly
+  - expected_tools_subset
+  - plan_agents_ok
+  - plan_task_params_ok
+- id: e2e_visa_cn_only
+  suite: e2e
+  user_query: нужна ли виза в китай гражданам рф
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    citizenship: RU
+    destination_country: Китай
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+  - plan_agents_ok
+  - plan_task_params_ok
+- id: e2e_flight_msk_ist
+  suite: e2e
+  user_query: рейсы из Москвы в Стамбул на ближайшую дату
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    flights_expected: true
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+  - expected_tools_any_hit
+- id: e2e_flight_msk_spb
+  suite: e2e
+  user_query: покажи рейсы Москва Санкт-Петербург
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Санкт-Петербург
+    flights_expected: true
+  success_criteria:
+  - has_final_answer
+  - expected_agents_subset
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_cn
+  suite: e2e
+  user_query: есть ли рейсы из Москвы в Китай
+  tags:
+  - flight
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination_country: Китай
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_search_flex
+  suite: e2e
+  user_query: найди самый дешёвый перелёт из Москвы в Турцию в июне
+  tags:
+  - flight
+  - search
+  difficulty: hard
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - search_flights
+  - get_flights
+  reference_facts:
+    origin: Москва
+    destination_country: Турция
+  success_criteria:
+  - has_final_answer
+  - expected_tools_any_hit
+- id: e2e_carrier_aeroflot
+  suite: e2e
+  user_query: правила ручной клади Аэрофлот
+  tags:
+  - compliance
+  - carrier
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - get_carrier_policy
+  reference_facts:
+    carrier: Aeroflot
+  must_contain_any:
+  - клад
+  - багаж
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_carrier_pobeda
+  suite: e2e
+  user_query: сколько багажа можно взять на рейс Победы
+  tags:
+  - compliance
+  - carrier
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - get_carrier_policy
+  reference_facts:
+    carrier: Pobeda
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_weather_ist
+  suite: e2e
+  user_query: какая погода в Стамбуле завтра
+  tags:
+  - external
+  - weather
+  difficulty: easy
+  expected_agents:
+  - external_agent
+  expected_tools:
+  - get_weather
+  must_contain_any:
+  - погод
+  - температур
+  - °
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_hotels_ist
+  suite: e2e
+  user_query: отели рядом со Стамбулом
+  tags:
+  - external
+  - hotels
+  difficulty: medium
+  expected_agents:
+  - external_agent
+  expected_tools:
+  - search_nearby_hotels
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_compound_weather_flight
+  suite: e2e
+  user_query: рейсы в Стамбул и погода там на завтра
+  tags:
+  - compound
+  - flight
+  - external
+  difficulty: hard
+  expected_agents:
+  - flight_agent
+  - external_agent
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+- id: e2e_visa_abkhazia
+  suite: e2e
+  user_query: нужна ли виза в Абхазию для россиян
+  tags:
+  - compliance
+  - visa
+  difficulty: medium
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  must_contain_any:
+  - виз
+  - Абхаз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_belarus
+  suite: e2e
+  user_query: виза в Беларусь для граждан России
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  success_criteria:
+  - has_final_answer
+- id: e2e_flight_details
+  suite: e2e
+  user_query: детали рейса SU1234
+  tags:
+  - flight
+  - details
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flight_details
+  - get_flights
+  reference_facts:
+    flight_code: SU1234
+  success_criteria:
+  - has_final_answer
+  - expected_tools_any_hit
+- id: e2e_animals_s7
+  suite: e2e
+  user_query: можно ли перевозить животных в салоне S7
+  tags:
+  - compliance
+  - animals
+  difficulty: medium
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - get_carrier_policy
+  must_contain_any:
+  - животн
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_compound_visa_carrier
+  suite: e2e
+  user_query: виза в Турцию для россиян и нормы ручной клади Turkish Airlines
+  tags:
+  - compound
+  - compliance
+  difficulty: hard
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  - get_carrier_policy
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+- id: e2e_flight_country_tr
+  suite: e2e
+  user_query: рейсы из Москвы в Турцию
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination_country: Турция
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_greeting_travel
+  suite: e2e
+  user_query: 'помоги спланировать поездку в Стамбул: перелёт и виза'
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: hard
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  success_criteria:
+  - has_final_answer
+  - both_subtasks_addressed
+- id: e2e_flight_msk_paris
+  suite: e2e
+  user_query: рейсы Москва Париж
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Париж
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_dubai
+  suite: e2e
+  user_query: перелёты из Москвы в Дубай
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Дубай
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_rome
+  suite: e2e
+  user_query: расписание Москва Рим
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Рим
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_bangkok
+  suite: e2e
+  user_query: есть ли рейс Москва Бангкок
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Бангкок
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_delhi
+  suite: e2e
+  user_query: рейсы в Дели из Москвы
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Дели
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_spb_msk
+  suite: e2e
+  user_query: рейсы Санкт-Петербург Москва
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Санкт-Петербург
+    destination: Москва
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_berlin
+  suite: e2e
+  user_query: Москва Берлин рейсы
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Берлин
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_flight_msk_prague
+  suite: e2e
+  user_query: билеты Москва Прага
+  tags:
+  - flight
+  difficulty: easy
+  expected_agents:
+  - flight_agent
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    origin: Москва
+    destination: Прага
+  success_criteria:
+  - has_final_answer
+  - flights_listed_or_empty_ok
+- id: e2e_visa_uae
+  suite: e2e
+  user_query: виза оаэ для россиян
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: ОАЭ
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_india
+  suite: e2e
+  user_query: нужна ли виза в индию гражданам рф
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Индия
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_thailand
+  suite: e2e
+  user_query: виза таиланд россия
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Таиланд
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_serbia
+  suite: e2e
+  user_query: виза сербия для россиян
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Сербия
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_armenia
+  suite: e2e
+  user_query: поездка в армению виза
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Армения
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_uzbekistan
+  suite: e2e
+  user_query: виза узбекистан рф
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Узбекистан
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_georgia
+  suite: e2e
+  user_query: нужна ли виза в грузию
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Грузия
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_visa_egypt
+  suite: e2e
+  user_query: виза египет для туристов из россии
+  tags:
+  - compliance
+  - visa
+  difficulty: easy
+  expected_agents:
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  reference_facts:
+    destination_country: Египет
+    citizenship: RU
+  must_contain_any:
+  - виз
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_weather_moscow
+  suite: e2e
+  user_query: погода в москве
+  tags:
+  - external
+  difficulty: easy
+  expected_agents:
+  - external_agent
+  expected_tools:
+  - get_weather
+  must_contain_any:
+  - погод
+  - Москв
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_weather_spb
+  suite: e2e
+  user_query: прогноз в санкт-петербурге
+  tags:
+  - external
+  difficulty: easy
+  expected_agents:
+  - external_agent
+  expected_tools:
+  - get_weather
+  must_contain_any:
+  - погод
+  - Петербург
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_hotels_moscow
+  suite: e2e
+  user_query: гостиницы рядом с москвой
+  tags:
+  - external
+  difficulty: easy
+  expected_agents:
+  - external_agent
+  expected_tools:
+  - search_nearby_hotels
+  must_contain_any:
+  - отел
+  - гостин
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_hotels_antalya
+  suite: e2e
+  user_query: отели в анталье
+  tags:
+  - external
+  difficulty: easy
+  expected_agents:
+  - external_agent
+  expected_tools:
+  - search_nearby_hotels
+  must_contain_any:
+  - отел
+  - Анталь
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+- id: e2e_compound_msk_uae
+  suite: e2e
+  user_query: рейсы москва оаэ и виза для россиян
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    destination_country: ОАЭ
+    citizenship: RU
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+  - both_subtasks_addressed
+- id: e2e_compound_msk_th
+  suite: e2e
+  user_query: перелёт москва таиланд и визовые правила
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    destination_country: Таиланд
+    citizenship: RU
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+  - both_subtasks_addressed
+- id: e2e_compound_msk_ge
+  suite: e2e
+  user_query: москва тбилиси рейсы и виза в грузию
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    destination_country: Грузия
+    citizenship: RU
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+  - both_subtasks_addressed
+- id: e2e_compound_msk_am
+  suite: e2e
+  user_query: рейс в армению и нужна ли виза
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    destination_country: Армения
+    citizenship: RU
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+  - both_subtasks_addressed
+- id: e2e_compound_msk_eg
+  suite: e2e
+  user_query: египет рейсы из москвы и виза
+  tags:
+  - compound
+  - flight
+  - compliance
+  difficulty: medium
+  expected_agents:
+  - flight_agent
+  - compliance_agent
+  expected_tools:
+  - check_visa_requirements
+  expected_tools_any:
+  - get_flights
+  - search_flights
+  reference_facts:
+    destination_country: Египет
+    citizenship: RU
+  success_criteria:
+  - has_final_answer
+  - parallel_domains
+  - both_subtasks_addressed

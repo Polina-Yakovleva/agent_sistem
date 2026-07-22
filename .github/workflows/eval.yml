@@ -1,0 +1,44 @@
+name: Eval
+on:
+  pull_request:
+    branches: [main, master]
+  schedule:
+    - cron: "0 3 * * 1" # еженедельный плановый мониторинг (пн, 03:00 UTC)
+  workflow_dispatch:
+    inputs:
+      significance:
+        description: "СЗ модели (A/B/C/D)"
+        default: "C"
+      online:
+        description: "Запускать online-разделы (нужны сервисы)"
+        type: boolean
+        default: false
+
+jobs:
+  eval-offline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install eval dependencies
+        run: pip install -r requirements-eval.txt -r requirements-dev.txt
+
+      - name: Sync/generate datasets (check)
+        run: python -m scripts.eval.generate_datasets --check
+
+      - name: Eval unit tests
+        run: python -m pytest tests/eval -q
+
+      - name: Offline validation report
+        run: python -m scripts.eval.run_all --offline --significance "${{ github.event.inputs.significance || 'C' }}"
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-report
+          path: eval_reports/

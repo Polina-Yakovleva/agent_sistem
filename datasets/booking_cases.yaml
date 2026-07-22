@@ -1,0 +1,225 @@
+version: 1
+suite: booking
+description: Golden dataset — booking
+count: 12
+cases:
+- id: book_reserve_flow_001
+  suite: booking
+  user_query: забронируй билет на рейс SU1234 для Иванова Ивана, паспорт 4510123456
+  tags:
+  - booking
+  - hitl
+  difficulty: hard
+  expected_agents:
+  - booking_agent
+  expected_tools:
+  - add_passenger
+  - reserve_ticket
+  booking_eval:
+    hitl_required: true
+    expect_interrupt: true
+    hitl_confirm: true
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+  human_review_recommended: true
+- id: book_cancel_flow_001
+  suite: booking
+  user_query: отмени мою бронь на рейс DP4101
+  tags:
+  - booking
+  - hitl
+  - cancel
+  difficulty: hard
+  expected_agents:
+  - booking_agent
+  expected_tools:
+  - cancel_reservation
+  booking_eval:
+    hitl_required: true
+    expect_interrupt: true
+  success_criteria:
+  - has_final_answer
+- id: book_invalid_passport
+  suite: booking
+  user_query: оформи билет на S71005, паспорт ABC, фамилия Тестов
+  tags:
+  - booking
+  - validation
+  difficulty: medium
+  expected_agents:
+  - booking_agent
+  booking_eval:
+    invalid_passport: true
+  must_contain_any:
+  - паспорт
+  - неверн
+  - формат
+  - ошибк
+  success_criteria:
+  - has_final_answer
+- id: book_reserve_flow_002
+  suite: booking
+  user_query: забронируй SU2140 для Петровой Анны, паспорт 4511223344
+  tags:
+  - booking
+  - hitl
+  difficulty: hard
+  expected_agents:
+  - booking_agent
+  expected_tools:
+  - add_passenger
+  - reserve_ticket
+  booking_eval:
+    hitl_required: true
+    expect_interrupt: true
+    hitl_confirm: true
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+  human_review_recommended: true
+- id: book_reserve_reject_001
+  suite: booking
+  user_query: оформи билет на рейс DP200 для Смирнова Олега, паспорт 4512334455
+  tags:
+  - booking
+  - hitl
+  - reject
+  difficulty: hard
+  expected_agents:
+  - booking_agent
+  booking_eval:
+    hitl_required: true
+    expect_interrupt: true
+    hitl_confirm: false
+  must_contain_any:
+  - отмен
+  - не подтверд
+  - заново
+  success_criteria:
+  - has_final_answer
+  human_review_recommended: true
+- id: book_no_passenger_data
+  suite: booking
+  user_query: хочу забронировать рейс DP203
+  tags:
+  - booking
+  - validation
+  difficulty: medium
+  expected_agents:
+  - booking_agent
+  must_contain_any:
+  - фамил
+  - паспорт
+  - данны
+  - укажите
+  success_criteria:
+  - has_final_answer
+- id: book_short_passport
+  suite: booking
+  user_query: оформи билет на DP204 для Кузнецова Игоря, паспорт 123
+  tags:
+  - booking
+  - validation
+  difficulty: medium
+  expected_agents:
+  - booking_agent
+  booking_eval:
+    invalid_passport: true
+  must_contain_any:
+  - паспорт
+  - 10 цифр
+  - неверн
+  - формат
+  success_criteria:
+  - has_final_answer
+- id: book_passport_letters
+  suite: booking
+  user_query: забронируй DP205 для Морозовой Елены, паспорт 45AB12CD34
+  tags:
+  - booking
+  - validation
+  difficulty: medium
+  expected_agents:
+  - booking_agent
+  booking_eval:
+    invalid_passport: true
+  must_contain_any:
+  - паспорт
+  - цифр
+  - неверн
+  - формат
+  success_criteria:
+  - has_final_answer
+- id: book_cancel_unknown_ticket
+  suite: booking
+  user_query: отмени бронь по билету 999999
+  tags:
+  - booking
+  - cancel
+  - validation
+  difficulty: medium
+  expected_agents:
+  - booking_agent
+  expected_tools:
+  - cancel_reservation
+  must_contain_any:
+  - не найден
+  - нет так
+  - отсутств
+  success_criteria:
+  - has_final_answer
+- id: book_reserve_flow_003
+  suite: booking
+  user_query: забронируй рейс DP206 для Волкова Дмитрия, паспорт 4513445566
+  tags:
+  - booking
+  - hitl
+  difficulty: hard
+  expected_agents:
+  - booking_agent
+  expected_tools:
+  - add_passenger
+  - reserve_ticket
+  booking_eval:
+    hitl_required: true
+    expect_interrupt: true
+    hitl_confirm: true
+  success_criteria:
+  - has_final_answer
+  - expected_tools_subset
+  human_review_recommended: true
+- id: book_reserve_by_code
+  suite: booking
+  user_query: нужен билет на рейс SU100 для Соколова Павла, паспорт 4514556677
+  tags:
+  - booking
+  - hitl
+  difficulty: hard
+  expected_agents:
+  - booking_agent
+  expected_tools:
+  - reserve_ticket
+  booking_eval:
+    hitl_required: true
+    expect_interrupt: true
+    hitl_confirm: true
+  success_criteria:
+  - has_final_answer
+  human_review_recommended: true
+- id: book_info_missing_flight
+  suite: booking
+  user_query: хочу забронировать билет, но не знаю номер рейса
+  tags:
+  - booking
+  - validation
+  difficulty: medium
+  expected_agents:
+  - booking_agent
+  must_contain_any:
+  - рейс
+  - номер
+  - укажите
+  - какой
+  success_criteria:
+  - has_final_answer

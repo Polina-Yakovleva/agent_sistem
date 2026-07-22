@@ -95,17 +95,25 @@ agent_runtime/
 │   ├── config.py             # настройки из окружения
 │   └── external_api.py       # погода / отели и др. внешние API
 ├── tests/                    # unit-тесты (agents, tools, memory, config)
+│   └── eval/                 # offline-тесты харнесса
+├── scripts/eval/             # бенчмарки агента и RAG
+├── datasets/                 # золотой датасет для eval
 ├── eval_reports/             # снимок full_dataset_report.*
-├── .github/workflows/        # ci.yml (ruff + pytest)
+├── .github/workflows/        # ci.yml (unit) · eval.yml (offline eval)
 ├── QUALITY.md                # карточка качества (метрики прогона)
 ├── checkenv.py               # дефолты и проверка .env
 ├── Dockerfile
 ├── docker-compose.yml        # api + Postgres + Qdrant
 ├── requirements.txt
-└── requirements-dev.txt
+├── requirements-dev.txt
+└── requirements-eval.txt
 ```
 
 `.env` с секретами в git не хранится.
+
+PoC HITL (happy path + эскалация на человека) — отдельная ветка
+[`feature/poc-hitl`](https://github.com/Polina-Yakovleva/agent_sistem/tree/feature/poc-hitl)
+(`examples/poc_hitl.py`); в `main` не сливается.
 
 ## Быстрый запуск (локально)
 
@@ -200,20 +208,25 @@ KPI для RAG — **recall@k и MRR**.
 
 ## Тесты / CI
 
-Unit-тесты (`tests/`) покрывают чистую логику агентов, инструментов и конфига —
-LLM, Postgres и Qdrant мокаются (`monkeypatch`), реальные сервисы не нужны.
+Два трека:
+
+| Трек | Что проверяет | Когда |
+|------|---------------|--------|
+| Unit (`tests/`, без `tests/eval`) | чистая логика агентов/инструментов/конфига; LLM/БД/Qdrant мокаются | каждый PR (`ci.yml`) |
+| Eval | бенчмарки агента и RAG | offline на PR; online вручную (`eval.yml`) |
 
 ```bash
 pip install -r requirements-dev.txt
 ruff check .
-pytest --cov=app --cov-report=term-missing
+pytest --ignore=tests/eval --cov=app --cov-report=term-missing
 ```
 
-На каждый push/PR в `main` GitHub Actions (`.github/workflows/ci.yml`) прогоняет
-линтер (`ruff`) и тесты (`pytest`).
+Eval-харнесс (`scripts/eval/`, золотой `datasets/`) — см. [`scripts/eval/README.md`](scripts/eval/README.md):
 
-Карточка качества и снимок метрик: [QUALITY.md](QUALITY.md), [`eval_reports/`](eval_reports/).
-Полный eval-харнесс (`scripts/eval/`, `datasets/`) — в ветке `feature/eval-harness`.
+```bash
+pip install -r requirements-eval.txt -r requirements-dev.txt
+python -m scripts.eval.run_all --offline
+```
 
 ## Готовность к API/Docker
 
